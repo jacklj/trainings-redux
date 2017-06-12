@@ -1,0 +1,6 @@
+/* custom styles can go here */
+
+.smallText p,
+.smallText li {
+	font-size: 0.7em;
+}

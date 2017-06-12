@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Prez</title>
+
+    <meta name="description" content="-- DESCRIPTION HERE --">
+    <meta name="author" content="jacklj">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="css/highlight/styles/zenburn.css" id="highlight-theme">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!-- INCLUDE CSS HERE -->
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div class="slides"><section id="title" class="slide" data-has-notes="true">
+<p><img src="images/reduxLogo.png" alt=""></p><aside class="notes"><p>Use <code>--such-notes</code> if they deserve better treatment.</p></aside>
+</section>
+
+<section id="what-is-redux" class="slide" data-has-notes="false">
+<h2>What is Redux?</h2><p>Redux is, at its core, an incredibly simple pattern. It:</p>
+<ol>
+<li>saves a current value</li>
+<li>runs a single function to update that value, when needed</li>
+<li>notifies any subscribers that something has changed</li>
+</ol>
+</section>
+
+<section id="principles-of-redux" class="slide" data-has-notes="false">
+<h2>3 Principles of Redux</h2>
+</section>
+
+<section id="first-principle" class="slide" data-has-notes="false">
+<h3>I</h3><h5>Represent the whole state (data and UI state) of your application in a single javascript object.</h5><p>a.k.a. the state, the state tree, the store (state + methods)</p>
+<ul>
+<li>The state is a minimal representation of the data in your app</li>
+<li>Single source of truth - simple data flow, UI can be pure function of state</li>
+</ul>
+</section>
+
+<section id="second-principle" class="slide" data-has-notes="false">
+<h3>II</h3><h5>The state tree is read only - to change it you must dispatch an action</h5><ul>
+<li>an action: the minimal representation of a change to the state</li>
+<li>all mutations to the state are <strong>explicit</strong>, so you can keep track of them (debugging :))</li>
+<li>separation of concerns - components don&#39;t need to know how the state works/is structured, they just dispatch an action</li>
+<li>implementation detail: a requirement that every action&#39;s type property is not undefined</li>
+</ul>
+</section>
+
+<section id="third-principle" class="slide" data-has-notes="false">
+<h3>III</h3><h5>State mutations are performed by pure functions, called reducers</h5><ul>
+<li>the functions that change the state (reducers) must be pure - they take the current state and the action being dispatched, and return the next state (a new object)</li>
+<li>the next state is therefore a pure function of current state and the dispatched action</li>
+<li>why? enables time-travel debugging</li>
+</ul>
+</section>
+
+<section id="reducer-details" class="slide" data-has-notes="false">
+<h3>Reducer details</h3><ul>
+<li>If it receives an unrecognised action, returns the existing state</li>
+<li>If the state is undefined, returns an initialState</li>
+<li>optimisations</li>
+</ul>
+</section>
+
+<section id="dispatching-actions" class="slide" data-has-notes="false">
+<h3>Dispatching actions - how does this work?</h3><p>The dispatch function simply calls the reducer function on the action and current state, and saves whatever value it returns</p>
+<p>mapDispatchToProps:</p>
+<ul>
+<li>a function that takes dispatch and returns functions that dispatch actions, i.e. it binds action creators with the dispatch function</li>
+<li>Shorthand - if the desired function takes the same arguments as the action creator, you can use the object shorthand instead of explicitly binding action creators with dispatch, that maps the names of the callback props to the corresponding (bound) action creators</li>
+</ul>
+</section>
+
+<section id="end" class="slide" data-has-notes="false">
+<h2>Thanks!</h2>
+</section></div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      transition: Reveal.getQueryHash().transition || 'slide', // none/fade/slide/convex/concave/zoom
+
+      // Optional reveal.js plugins
+      dependencies: [
+        //{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true },
+        { src: 'plugin/notes/notes.js', async: true }
+      ]
+    });
+    </script>
+
+    <!-- INCLUDE JS HERE -->
+
+  </body>
+</html>

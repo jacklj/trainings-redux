@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redux basic example</title>
+    <script>
+    function combineReducers(reducersMap) {
+      return function(state, action) {
+          var newState = {};
+          if (typeof state === 'undefined') {
+            state = {};
+          }
+          Object.keys(reducersMap).forEach(key => {
+            newState[key] = reducersMap[key](state[key], action);
+          })
+          return newState;
+      };
+    }
+
+    function createStore(reducer) {
+      var state = reducer();
+      var listeners = [];
+
+      function getState() {
+        return state;
+      }
+
+      function subscribe(listener) {
+        listeners.push(listener);
+      }
+
+      function dispatch(action) {
+        var newState = reducer(state, action);
+
+        if (newState !== state) {
+          state = newState;
+          listeners.forEach(listener => listener());
+        }
+      }
+
+      return { getState, subscribe, dispatch };
+    }
+
+    </script>
+  </head>
+  <body>
+    <div id="counter">
+    </div>
+    <div id="election">
+    </div>
+
+    <button id="increment">+</button>
+    <button id="decrement">-</button>
+
+    <script>
+      function counterReducer(state, action) {
+        if (typeof state === 'undefined') {
+          return {
+            value: 0
+          };
+        }
+
+        if (action.type === 'INCREMENT') {
+          return Object.assign({}, state, {
+            value: state.value + 1,
+          });
+        } else if (action.type === 'DECREMENT') {
+          return Object.assign({}, state, {
+            value: state.value - 1,
+          });
+        } else {
+          return state;
+        }
+      }
+
+      function electionReducer(state, action) {
+        if (typeof state === 'undefined') {
+          return {
+            winner: 'conservative',
+          };
+        }
+
+        if (action.type === 'INCREMENT') {
+          return Object.assign({}, state, {
+            winner: 'labour',
+          });
+        } else if (action.type === 'DECREMENT') {
+          return Object.assign({}, state, {
+            winner: 'green',
+          });
+        } else {
+          return state;
+        }
+      }
+
+      var reducer = combineReducers({
+        counter: counterReducer,
+        election: electionReducer
+      })
+
+      var store = createStore(reducer);
+
+      var incrementButton = document.getElementById('increment');
+      var decrementButton = document.getElementById('decrement');
+
+      incrementButton.addEventListener('click', function() {
+        return store.dispatch({type: 'INCREMENT'});
+      });
+
+      decrementButton.addEventListener('click', function() {
+        return store.dispatch({type: 'DECREMENT'});
+      })
+
+      var counterDiv = document.getElementById('counter');
+      var electionDiv = document.getElementById('election');
+
+      function render () {
+        counterDiv.innerHTML = store.getState().counter.value;
+        electionDiv.innerHTML = store.getState().election.winner;
+      }
+
+      store.subscribe(render);
+
+      render();
+
+
+    </script>
+  </body>
+</html>
